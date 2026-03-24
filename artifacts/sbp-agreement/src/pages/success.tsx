@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRoute } from "wouter";
 import { useGetAgreement } from "@workspace/api-client-react";
 import { DocumentTemplate } from "@/components/DocumentTemplate";
@@ -14,6 +14,10 @@ export default function SuccessPage() {
   const { data: agreement, isLoading } = useGetAgreement(id || "");
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
   const documentRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   const handleDownloadPdf = async () => {
     if (!documentRef.current || !agreement) return;
