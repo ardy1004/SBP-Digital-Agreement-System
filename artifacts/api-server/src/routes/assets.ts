@@ -1,6 +1,6 @@
-import { Router, type IRouter } from "express";
+import { Router, type Request, type Response } from "express";
 
-const router: IRouter = Router();
+const router = Router();
 
 const ASSETS: Record<string, { url: string; contentType: string }> = {
   logo: {
@@ -17,7 +17,7 @@ const ASSETS: Record<string, { url: string; contentType: string }> = {
   },
 };
 
-router.get("/assets/:name", async (req, res) => {
+router.get("/assets/:name", async (req: Request, res: Response) => {
   const asset = ASSETS[req.params.name];
   if (!asset) {
     res.status(404).json({ error: "Asset not found" });

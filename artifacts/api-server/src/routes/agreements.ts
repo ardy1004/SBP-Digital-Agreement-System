@@ -1,4 +1,4 @@
-import { Router, type IRouter } from "express";
+import { Router, type Request, type Response } from "express";
 import { db, agreementsTable } from "@workspace/db";
 import { eq } from "drizzle-orm";
 import { randomUUID } from "crypto";
@@ -7,7 +7,7 @@ import {
   SignAgreementBody,
 } from "@workspace/api-zod";
 
-const router: IRouter = Router();
+const router = Router();
 
 function generateNomor(): string {
   const now = new Date();
@@ -18,7 +18,7 @@ function generateNomor(): string {
   return `SBP/${year}/${month}${day}/${random}`;
 }
 
-router.post("/agreements", async (req, res) => {
+router.post("/agreements", async (req: Request, res: Response) => {
   const parsed = CreateAgreementBody.safeParse(req.body);
   if (!parsed.success) {
     res.status(400).json({ error: parsed.error.message });
@@ -50,7 +50,7 @@ router.post("/agreements", async (req, res) => {
   res.status(201).json(formatAgreement(agreement));
 });
 
-router.get("/agreements", async (_req, res) => {
+router.get("/agreements", async (_req: Request, res: Response) => {
   const agreements = await db
     .select()
     .from(agreementsTable)
@@ -59,7 +59,7 @@ router.get("/agreements", async (_req, res) => {
   res.json(agreements.map(formatAgreement));
 });
 
-router.get("/agreements/:id", async (req, res) => {
+router.get("/agreements/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
   const [agreement] = await db
     .select()
