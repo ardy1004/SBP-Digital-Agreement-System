@@ -230,7 +230,7 @@ export const DocumentTemplate = forwardRef<HTMLDivElement, DocumentTemplateProps
                 <img
                   src="/api/assets/materai"
                   alt="Materai 10000"
-                  style={{ width: "90px", position: "absolute", left: 0, bottom: 0, zIndex: 1 }}
+                  style={{ width: "140px", position: "absolute", left: 0, bottom: 0, zIndex: 1 }}
                 />
 
                 {isSigning ? (
@@ -249,7 +249,7 @@ export const DocumentTemplate = forwardRef<HTMLDivElement, DocumentTemplateProps
                     >
                       <SignatureCanvas
                         ref={signatureCanvasRef}
-                        penColor="blue"
+                        penColor="black"
                         canvasProps={{
                           className: "w-full h-full",
                           style: { background: "transparent" },
