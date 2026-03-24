@@ -17,7 +17,7 @@ const ASSETS: Record<string, { url: string; contentType: string }> = {
   },
 };
 
-router.get("/assets/:name", async (req: Request, res: Response) => {
+router.get("/assets/:name", async (req: Request<{ name: string }>, res: Response) => {
   const asset = ASSETS[req.params.name];
   if (!asset) {
     res.status(404).json({ error: "Asset not found" });

@@ -59,7 +59,7 @@ router.get("/agreements", async (_req: Request, res: Response) => {
   res.json(agreements.map(formatAgreement));
 });
 
-router.get("/agreements/:id", async (req: Request, res: Response) => {
+router.get("/agreements/:id", async (req: Request<{ id: string }>, res: Response) => {
   const { id } = req.params;
   const [agreement] = await db
     .select()
@@ -74,7 +74,7 @@ router.get("/agreements/:id", async (req: Request, res: Response) => {
   res.json(formatAgreement(agreement));
 });
 
-router.post("/agreements/:id/sign", async (req, res) => {
+router.post("/agreements/:id/sign", async (req: Request<{ id: string }>, res: Response) => {
   const { id } = req.params;
   const parsed = SignAgreementBody.safeParse(req.body);
   if (!parsed.success) {
