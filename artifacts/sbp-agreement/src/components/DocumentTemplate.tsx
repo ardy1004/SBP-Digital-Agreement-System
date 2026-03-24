@@ -225,37 +225,36 @@ export const DocumentTemplate = forwardRef<HTMLDivElement, DocumentTemplateProps
               <p className="mb-4"><strong>PIHAK KEDUA</strong></p>
 
               {/* Signature + Materai container */}
-              <div className="relative" style={{ width: "220px", height: "140px" }}>
-                {/* Materai stamp — always visible, no blur */}
+              <div className="relative" style={{ width: "220px", height: "160px" }}>
+                {/* Materai stamp — always visible underneath */}
                 <img
                   src="/api/assets/materai"
                   alt="Materai 10000"
-                  style={{ width: "140px", position: "absolute", left: 0, bottom: 0, zIndex: 1 }}
+                  style={{ width: "140px", position: "absolute", left: 0, bottom: 0, zIndex: 1, pointerEvents: "none" }}
                 />
 
                 {isSigning ? (
                   <>
-                    {/* Transparent canvas sits ON TOP of the materai */}
-                    <div
-                      style={{
-                        position: "absolute",
-                        inset: 0,
-                        zIndex: 2,
-                        border: "2px dashed #93c5fd",
-                        borderRadius: "6px",
-                        overflow: "hidden",
-                        background: "transparent",
+                    {/* Transparent canvas ON TOP — explicit pixel dims so drawing registers correctly */}
+                    <SignatureCanvas
+                      ref={signatureCanvasRef}
+                      penColor="black"
+                      minWidth={1.5}
+                      maxWidth={3}
+                      canvasProps={{
+                        width: 220,
+                        height: 160,
+                        style: {
+                          position: "absolute",
+                          inset: 0,
+                          background: "transparent",
+                          cursor: "crosshair",
+                          zIndex: 2,
+                          border: "2px dashed #93c5fd",
+                          borderRadius: "4px",
+                        },
                       }}
-                    >
-                      <SignatureCanvas
-                        ref={signatureCanvasRef}
-                        penColor="black"
-                        canvasProps={{
-                          className: "w-full h-full",
-                          style: { background: "transparent" },
-                        }}
-                      />
-                    </div>
+                    />
                     {onClearSignature && (
                       <button
                         onClick={onClearSignature}
