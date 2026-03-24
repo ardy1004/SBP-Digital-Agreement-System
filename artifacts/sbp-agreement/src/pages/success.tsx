@@ -36,7 +36,7 @@ export default function SuccessPage() {
       const opt = {
         margin: 0,
         filename: `Perjanjian_Pemasaran_${agreement.nama_owner.replace(/\s+/g, '_')}.pdf`,
-        image: { type: 'jpeg', quality: 1 },
+        image: { type: 'jpeg' as const, quality: 1 },
         html2canvas: { scale: 2, useCORS: true, logging: false },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
