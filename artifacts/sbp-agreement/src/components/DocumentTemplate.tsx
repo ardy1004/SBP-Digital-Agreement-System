@@ -221,32 +221,46 @@ export const DocumentTemplate = forwardRef<HTMLDivElement, DocumentTemplateProps
             </div>
 
             {/* PIHAK KEDUA */}
-            <div className="text-center relative">
+            <div className="text-center">
               <p className="mb-4"><strong>PIHAK KEDUA</strong></p>
-              
-              <div className="h-32 w-56 flex items-center justify-center relative border border-transparent rounded bg-transparent">
-                {/* Materai Background */}
-                <div className="absolute left-0 bottom-0 opacity-80 z-0">
-                  <img 
-                    src="/api/assets/materai" 
-                    alt="Materai 10000" 
-                    className="w-20 object-contain"
-                  />
-                </div>
+
+              {/* Signature + Materai container */}
+              <div className="relative" style={{ width: "220px", height: "140px" }}>
+                {/* Materai stamp — always visible, no blur */}
+                <img
+                  src="/api/assets/materai"
+                  alt="Materai 10000"
+                  style={{ width: "90px", position: "absolute", left: 0, bottom: 0, zIndex: 1 }}
+                />
 
                 {isSigning ? (
                   <>
-                    <div className="absolute inset-0 z-10 w-full h-full border-2 border-dashed border-primary/30 rounded-md overflow-hidden bg-white/50 backdrop-blur-[2px]">
+                    {/* Transparent canvas sits ON TOP of the materai */}
+                    <div
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        zIndex: 2,
+                        border: "2px dashed #93c5fd",
+                        borderRadius: "6px",
+                        overflow: "hidden",
+                        background: "transparent",
+                      }}
+                    >
                       <SignatureCanvas
                         ref={signatureCanvasRef}
                         penColor="blue"
-                        canvasProps={{ className: "w-full h-full" }}
+                        canvasProps={{
+                          className: "w-full h-full",
+                          style: { background: "transparent" },
+                        }}
                       />
                     </div>
                     {onClearSignature && (
-                      <button 
+                      <button
                         onClick={onClearSignature}
-                        className="absolute -right-4 -top-4 bg-muted text-muted-foreground hover:bg-destructive hover:text-destructive-foreground rounded-full p-1 shadow-md z-20 no-print transition-colors"
+                        style={{ position: "absolute", top: "-14px", right: "-14px", zIndex: 3 }}
+                        className="bg-muted text-muted-foreground hover:bg-destructive hover:text-destructive-foreground rounded-full p-1 shadow-md no-print transition-colors"
                         type="button"
                         title="Hapus Tanda Tangan"
                       >
@@ -254,21 +268,19 @@ export const DocumentTemplate = forwardRef<HTMLDivElement, DocumentTemplateProps
                       </button>
                     )}
                   </>
+                ) : agreement.signature_url ? (
+                  <img
+                    src={agreement.signature_url}
+                    alt="Tanda Tangan Pihak Kedua"
+                    style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain", zIndex: 2 }}
+                  />
                 ) : (
-                  agreement.signature_url ? (
-                    <img 
-                      src={agreement.signature_url} 
-                      alt="Tanda Tangan Pihak Kedua" 
-                      className="absolute inset-0 w-full h-full object-contain z-10"
-                      crossOrigin="anonymous"
-                    />
-                  ) : (
-                    <div className="absolute inset-0 flex items-center justify-center z-10">
-                      <span className="text-muted-foreground/50 italic text-sm">(Belum Ditandatangani)</span>
-                    </div>
-                  )
+                  <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 2 }}>
+                    <span className="text-muted-foreground/50 italic text-sm">(Belum Ditandatangani)</span>
+                  </div>
                 )}
               </div>
+
               <p className="font-bold underline mt-4 uppercase">{agreement.nama_owner}</p>
             </div>
           </div>

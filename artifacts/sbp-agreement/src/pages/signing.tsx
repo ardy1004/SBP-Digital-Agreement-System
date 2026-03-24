@@ -134,7 +134,7 @@ export default function SigningPage() {
             {isSubmitting ? (
               <><Loader2 className="w-5 h-5 animate-spin" /> Memproses...</>
             ) : (
-              <><Check className="w-5 h-5" /> Tandatangani Perjanjian</>
+              <><Check className="w-5 h-5" /> Simpan Perjanjian</>
             )}
           </button>
         </div>
