@@ -1,0 +1,15 @@
+packages:
+  "react-signature-canvas": "For capturing digital signatures from users"
+  "@types/react-signature-canvas": "Types for react-signature-canvas"
+  "html2pdf.js": "Client-side PDF generation from HTML"
+  "date-fns": "For formatting agreement dates"
+  "react-hook-form": "For form state management"
+  "@hookform/resolvers": "For zod validation in forms"
+  "lucide-react": "Icons"
+  "clsx": "Utility for constructing className strings"
+  "tailwind-merge": "Utility for merging tailwind classes"
+
+notes:
+  - "Using html2pdf.js with dynamic imports to avoid SSR issues if any"
+  - "Relying on @workspace/api-client-react for all API interactions"
+  - "Signature canvas will output PNG base64 for API submission"

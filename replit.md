@@ -48,6 +48,31 @@ Every package extends `tsconfig.base.json` which sets `composite: true`. The roo
 - `pnpm run build` — runs `typecheck` first, then recursively runs `build` in all packages that define it
 - `pnpm run typecheck` — runs `tsc --build --emitDeclarationOnly` using project references
 
+## Application
+
+### SBP Digital Agreement System (`artifacts/sbp-agreement`)
+
+React + Vite frontend for property marketing agreements with digital signature capabilities.
+
+- **Admin page** (`/`): Form to create new agreements, history list, WhatsApp share link generation
+- **Signing page** (`/agreement/:id`): A4 legal document view with digital signature canvas + materai stamp
+- **Success page** (`/agreement/:id/success`): Confirmation page with PDF download (html2pdf.js)
+- Routes use wouter, API client from `@workspace/api-client-react`
+- Assets: logo, materai, and agent signature hosted on images.salambumi.xyz
+
+Key packages: `react-signature-canvas`, `html2pdf.js`, `react-hook-form`, `date-fns`, `lucide-react`
+
+### Agreement API Routes (`artifacts/api-server/src/routes/agreements.ts`)
+
+- `POST /api/agreements` — create new agreement (generates UUID + nomor)
+- `GET /api/agreements` — list all agreements
+- `GET /api/agreements/:id` — get single agreement
+- `POST /api/agreements/:id/sign` — sign with base64 signature, marks status=signed
+
+### Database Schema (`lib/db/src/schema/agreements.ts`)
+
+`agreements` table with: id, nomor, nama_owner, nik, alamat_owner, jenis_properti, luas_tanah, legalitas, alamat_properti, harga_nett, tanggal_perjanjian, signature_url, pdf_url, status (draft/signed), created_at
+
 ## Packages
 
 ### `artifacts/api-server` (`@workspace/api-server`)

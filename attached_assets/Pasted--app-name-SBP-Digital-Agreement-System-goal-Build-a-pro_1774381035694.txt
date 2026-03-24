@@ -1,0 +1,199 @@
+{
+  "app_name": "SBP Digital Agreement System",
+  "goal": "Build a production-ready web app for digital property agreement with NETT system, WhatsApp share link, digital signature, PDF generation, using Cloudflare D1 and R2",
+
+  "tech_stack": {
+    "frontend": "Next.js 14 (App Router) + TailwindCSS",
+    "backend": "Cloudflare Workers API",
+    "database": "Cloudflare D1",
+    "storage": "Cloudflare R2",
+    "pdf_engine": "html2pdf",
+    "signature": "react-signature-canvas"
+  },
+
+  "cloudflare": {
+    "base_url": "https://sbp-digital-agreements.workers.dev"
+  },
+
+  "core_concept": {
+    "pricing_model": "NETT",
+    "rule": "Owner hanya menerima Rp 5.000.000.000 bersih. Harga jual dan margin sepenuhnya milik agent",
+    "no_commission": true
+  },
+
+  "fixed_party": {
+    "PIHAK_PERTAMA": {
+      "locked": true,
+      "data": {
+        "nama": "CV Salam Bumi Property",
+        "alamat": "Jl Pajajaran, Catur Tunggal, Depok, Sleman (Virtual Office)",
+        "telp": "0813-9127-8889",
+        "email": "salambumiproperty@gmail.com",
+        "website": "salambumi.xyz",
+        "role": "Penyedia Jasa Pemasaran Properti"
+      }
+    },
+    "PIHAK_KEDUA": "form_input_owner"
+  },
+
+  "form_fields": [
+    "nama_owner",
+    "nik",
+    "alamat_owner",
+    "jenis_properti",
+    "luas_tanah",
+    "legalitas",
+    "alamat_properti",
+    "harga_nett",
+    "tanggal_perjanjian"
+  ],
+
+  "owner_address_rules": {
+    "required": true,
+    "render_format": "Alamat: {alamat_owner}",
+    "must_be_visible_in_document": true
+  },
+
+  "ahli_waris_rule": {
+    "nama": "IR. DJONI HERDIWAN, MM",
+    "nik": "3173052309680009",
+    "ketentuan": "Mendapat Rp 10.000.000 dari margin agent setelah AJB",
+    "note": "Tidak mengurangi harga NETT owner"
+  },
+
+  "whatsapp_share": {
+    "enabled": true,
+    "url_format": "https://wa.me/?text={encoded_message}",
+    "message_template": "Halo Pak/Bu, berikut perjanjian pemasaran properti Anda. Silakan dibaca dan langsung tanda tangan melalui link berikut: {link}",
+    "auto_encode": true
+  },
+
+  "share_link": {
+    "format": "/agreement/{id}",
+    "public_access": true,
+    "no_login": true
+  },
+
+  "signature_system": {
+    "type": "canvas",
+    "required": true,
+    "validation": "reject_if_empty",
+    "layout": {
+      "container": "relative",
+      "materai": {
+        "position": "absolute",
+        "z_index": 1,
+        "src": "https://images.salambumi.xyz/materai/hg.png"
+      },
+      "canvas": {
+        "position": "absolute",
+        "z_index": 2,
+        "background": "transparent"
+      }
+    },
+    "flow": [
+      "canvas kosong saat load",
+      "user menggambar tanda tangan",
+      "submit",
+      "canvas dikunci",
+      "tidak bisa edit ulang"
+    ]
+  },
+
+  "assets": {
+    "logo": "https://images.salambumi.xyz/materai/fav.webp",
+    "materai": "https://images.salambumi.xyz/materai/hg.png",
+    "agent_signature": "https://images.salambumi.xyz/materai/gsd-removebg-preview%20-%20Copy.png"
+  },
+
+  "document_template": {
+    "layout": "A4 fixed",
+    "font": "Times New Roman",
+    "style": "formal legal",
+
+    "sections": [
+      "Header dengan logo kiri",
+      "PIHAK PERTAMA (fixed system)",
+      "PIHAK KEDUA (nama, NIK, alamat lengkap)",
+      "Pasal 1 Objek",
+      "Pasal 2 Penunjukan",
+      "Pasal 3 Harga NETT",
+      "Pasal 4 Hak Margin",
+      "Pasal 5 Ahli Waris (Rp 10 juta dari margin)",
+      "Pasal 6 Larangan Intervensi",
+      "Pasal 7 Anti Bypass",
+      "Pasal 8 Kewajiban",
+      "Pasal 9 Pajak ditanggung agent",
+      "Penutup",
+      "Signature Section"
+    ],
+
+    "signature_layout": {
+      "left": "PIHAK PERTAMA + tanda tangan agent (image)",
+      "right": "PIHAK KEDUA + materai + canvas signature"
+    }
+  },
+
+  "pdf_generation": {
+    "engine": "html2pdf",
+    "must_match_preview": true,
+    "include_assets": true
+  },
+
+  "api": {
+    "upload": "/upload",
+    "save": "/save",
+    "download": "/file/{key}"
+  },
+
+  "database": {
+    "table": "agreements",
+    "fields": [
+      "id",
+      "nomor",
+      "nama_owner",
+      "nik",
+      "alamat_owner",
+      "pdf_url",
+      "signature_url",
+      "status",
+      "created_at"
+    ]
+  },
+
+  "status_flow": ["draft", "signed"],
+
+  "signing_flow": [
+    "Admin input data",
+    "Generate link",
+    "Share via WhatsApp",
+    "Owner klik link",
+    "Preview perjanjian",
+    "Tanda tangan",
+    "Generate PDF",
+    "Upload ke R2",
+    "Save ke D1",
+    "Redirect success",
+    "Owner download PDF"
+  ],
+
+  "success_page": {
+    "message": "PERJANJIAN BERHASIL DITANDATANGANI",
+    "button": "Download PDF"
+  },
+
+  "constraints": [
+    "PIHAK PERTAMA tidak boleh diubah",
+    "alamat owner wajib tampil",
+    "tidak boleh sign tanpa tanda tangan",
+    "tidak bisa sign ulang",
+    "PDF harus identik dengan preview"
+  ],
+
+  "validation": [
+    "nama_owner wajib",
+    "nik wajib",
+    "alamat_owner wajib",
+    "signature wajib"
+  ]
+}

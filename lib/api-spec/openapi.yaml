@@ -1,15 +1,16 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: SBP Digital Agreement System API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: agreements
+    description: Agreement management
 paths:
   /healthz:
     get:
@@ -24,6 +25,107 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /agreements:
+    post:
+      operationId: createAgreement
+      tags: [agreements]
+      summary: Create a new agreement
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAgreementRequest"
+      responses:
+        "201":
+          description: Agreement created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Agreement"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    get:
+      operationId: listAgreements
+      tags: [agreements]
+      summary: List all agreements
+      responses:
+        "200":
+          description: List of agreements
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Agreement"
+
+  /agreements/{id}:
+    get:
+      operationId: getAgreement
+      tags: [agreements]
+      summary: Get an agreement by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Agreement found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Agreement"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /agreements/{id}/sign:
+    post:
+      operationId: signAgreement
+      tags: [agreements]
+      summary: Sign an agreement with a signature image
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignAgreementRequest"
+      responses:
+        "200":
+          description: Agreement signed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Agreement"
+        "400":
+          description: Validation error or already signed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +136,102 @@ components:
       required:
         - status
 
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    CreateAgreementRequest:
+      type: object
+      properties:
+        nama_owner:
+          type: string
+        nik:
+          type: string
+        alamat_owner:
+          type: string
+        jenis_properti:
+          type: string
+        luas_tanah:
+          type: string
+        legalitas:
+          type: string
+        alamat_properti:
+          type: string
+        harga_nett:
+          type: string
+        tanggal_perjanjian:
+          type: string
+      required:
+        - nama_owner
+        - nik
+        - alamat_owner
+        - jenis_properti
+        - luas_tanah
+        - legalitas
+        - alamat_properti
+        - harga_nett
+        - tanggal_perjanjian
+
+    SignAgreementRequest:
+      type: object
+      properties:
+        signature_data:
+          type: string
+          description: Base64 encoded PNG of the signature
+      required:
+        - signature_data
+
+    Agreement:
+      type: object
+      properties:
+        id:
+          type: string
+        nomor:
+          type: string
+        nama_owner:
+          type: string
+        nik:
+          type: string
+        alamat_owner:
+          type: string
+        jenis_properti:
+          type: string
+        luas_tanah:
+          type: string
+        legalitas:
+          type: string
+        alamat_properti:
+          type: string
+        harga_nett:
+          type: string
+        tanggal_perjanjian:
+          type: string
+        signature_url:
+          type: string
+          nullable: true
+        pdf_url:
+          type: string
+          nullable: true
+        status:
+          type: string
+          enum: [draft, signed]
+        created_at:
+          type: string
+      required:
+        - id
+        - nomor
+        - nama_owner
+        - nik
+        - alamat_owner
+        - jenis_properti
+        - luas_tanah
+        - legalitas
+        - alamat_properti
+        - harga_nett
+        - tanggal_perjanjian
+        - status
+        - created_at
