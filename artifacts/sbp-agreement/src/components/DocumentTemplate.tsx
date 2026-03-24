@@ -21,10 +21,9 @@ export const DocumentTemplate = forwardRef<HTMLDivElement, DocumentTemplateProps
         {/* Header */}
         <div className="flex flex-col items-center mb-8">
           <img 
-            src="https://images.salambumi.xyz/materai/fav.webp" 
-            alt="Logo" 
+            src="/api/assets/logo" 
+            alt="Logo SBP" 
             className="w-24 h-24 object-contain mb-4"
-            crossOrigin="anonymous"
           />
           <h1 className="text-xl font-bold text-center underline uppercase tracking-wide">
             Surat Perjanjian Pemasaran Properti
@@ -213,10 +212,9 @@ export const DocumentTemplate = forwardRef<HTMLDivElement, DocumentTemplateProps
               <p className="mb-4"><strong>PIHAK PERTAMA</strong></p>
               <div className="h-32 flex items-center justify-center relative w-48">
                 <img 
-                  src="https://images.salambumi.xyz/materai/gsd-removebg-preview%20-%20Copy.png" 
+                  src="/api/assets/signature-agent" 
                   alt="Tanda Tangan Pihak Pertama" 
                   className="max-h-28 object-contain absolute z-10"
-                  crossOrigin="anonymous"
                 />
               </div>
               <p className="font-bold underline mt-4">CV SALAM BUMI PROPERTY</p>
@@ -230,10 +228,9 @@ export const DocumentTemplate = forwardRef<HTMLDivElement, DocumentTemplateProps
                 {/* Materai Background */}
                 <div className="absolute left-0 bottom-0 opacity-80 z-0">
                   <img 
-                    src="https://images.salambumi.xyz/materai/hg.png" 
+                    src="/api/assets/materai" 
                     alt="Materai 10000" 
                     className="w-20 object-contain"
-                    crossOrigin="anonymous"
                   />
                 </div>
 

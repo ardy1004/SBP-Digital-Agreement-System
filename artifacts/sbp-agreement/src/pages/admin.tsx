@@ -84,7 +84,7 @@ export default function AdminPage() {
       <header className="bg-primary text-primary-foreground py-6 shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-4">
-            <img src="https://images.salambumi.xyz/materai/fav.webp" alt="SBP Logo" className="w-12 h-12 bg-white rounded-full p-1 object-contain" />
+            <img src="/api/assets/logo" alt="SBP Logo" className="w-12 h-12 bg-white rounded-full p-1 object-contain" />
             <div>
               <h1 className="text-2xl font-bold tracking-tight">SBP Agreement System</h1>
               <p className="text-primary-foreground/80 text-sm">Digital Document Management</p>
